@@ -6,8 +6,6 @@ const router = express.Router();
 // Route to get all data
 router.get('/all', getAllData);
 
-// Route to filter data 
-router.post('/filter', filterData);
 
 
 
