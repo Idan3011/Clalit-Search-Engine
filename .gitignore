@@ -2,6 +2,6 @@
 data.csv
 node_modules
 venv
-.idea/
+.idea
 package.json
 package-lock.json
