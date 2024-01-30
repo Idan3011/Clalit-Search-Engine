@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { v4 as uuidv4 } from "uuid";
 import axios from "../../services/api";
 import "./TablePage.css";
+import Spinner from "../../assets/Spinner/Spinner";
 const TablePage = () => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -34,7 +35,7 @@ const TablePage = () => {
   }, []);
 
   return (
-    <div  className="table-container">
+    <div className="table-container">
       <DataGrid
         rows={rows}
         columns={columns.map((column) => ({
@@ -48,7 +49,8 @@ const TablePage = () => {
         pageSize={5}
         checkboxSelection
         disableSelectionOnClick
-        
+        isDataLoaded={DataGrid.length > 0}
+        loadingOverlayComponent={<Spinner />}
       />
     </div>
   );
