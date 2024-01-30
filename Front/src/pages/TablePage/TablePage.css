@@ -1,0 +1,31 @@
+.css-1kwdphh-MuiDataGrid-virtualScrollerContent {
+  width: 650px !important;
+  font-family: "Roboto", sans-serif;
+  color: #141111;
+}
+.custom-header {
+  font-size: 15px;
+  min-width: 10.6rem !important;
+  max-width: 10.6rem !important;
+  padding: 0.1rem !important;
+  text-decoration: underline;
+  font-weight: bolder;
+  font-family: "Roboto", sans-serif;
+}
+
+.custom-cell {
+  font-size: 12px;
+  min-width: 10.6rem !important;
+  max-width: 10.6rem !important;
+  padding: 0.1rem !important;
+  align-items: center;
+}
+
+.custom-row {
+  font-size: 12px;
+}
+
+.custom-cell:hover {
+  color: #f7f7f7f7;
+  background-color: rgb(198, 194, 194);
+}
