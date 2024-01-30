@@ -8,7 +8,7 @@ const app = express()
 app.use(cors())
 
 //Routes
-app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1', searchRoutes);
 
 const PORT  =process.env.PORT || 3000;
 

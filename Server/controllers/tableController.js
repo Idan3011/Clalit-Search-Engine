@@ -7,8 +7,7 @@ export const getAllData = async (req, res) => {
     const [rows, fields] = await pool.query('SELECT * FROM `clalit search`');
     res.status(STATUS_CODES.OK).send(rows);
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send('Internal Server Error');
+    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({message: 'Internal Server Error'});
   }
 };
 
