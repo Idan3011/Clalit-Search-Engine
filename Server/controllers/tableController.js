@@ -1,6 +1,7 @@
 import pool from "../config/db.js";
 import STATUS_CODES from "../constants/statusCode.js";
 
+
 export const getAllData = async (req, res) => {
   try {
     const page = req.query.page || 1;
