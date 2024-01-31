@@ -12,7 +12,7 @@ export const getAllData = async (req, res) => {
       "SELECT * FROM `clalit_search` LIMIT ?, ?",
       [offset, Number(pageSize)]
     );
-
+    res.setHeader('Content-Type', 'application/json');
     res.status(STATUS_CODES.OK).send(rows);
   } catch (error) {
     console.error(error);
