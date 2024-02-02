@@ -62,7 +62,7 @@ const TablePage = () => {
 
     return ({ column: { filterValue, setFilter } }) => (
       <div>
-        {options.length > 5 ? (
+        {options ? (
           <Autocomplete
             value={filterValue || null}
             onChange={(event, value) => setFilter(value || undefined)}
