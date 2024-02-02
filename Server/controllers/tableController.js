@@ -9,7 +9,7 @@ export const getAllData = async (req, res) => {
     const offset = (page - 1) * pageSize;
 
     const [rows, fields] = await pool.query(
-      "SELECT * FROM `clalit_search` LIMIT ?, ?",
+      "SELECT * FROM `Clalit_Search` LIMIT ?, ?",
       [offset, Number(pageSize)]
     );
     res.setHeader('Content-Type', 'application/json');
