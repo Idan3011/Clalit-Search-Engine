@@ -10,17 +10,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { isEqual } from "lodash";
 import "./TablePage.css";
+
 const TablePage = () => {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [pageSize, setPageSize] = useState(100);
   const [rowCount, setRowCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [selectedSearchValue, setSelectedSearchValue] = useState("");
+  const [copiedValue, setCopiedValue] = useState("");
 
-  const fetchPageData = async (pageNumber, size) => {
+  const fetchPageData = async (pageNumber, size, searchQuery) => {
     try {
       const response = await axios.get(
-        `/search/all?page=${pageNumber}&pageSize=${size}`
+        `/search/all?page=${pageNumber}&pageSize=${size}&searchQuery=${searchQuery}`
       );
 
       const rowsWithIds = response.data.map((row) => ({
@@ -35,12 +38,19 @@ const TablePage = () => {
         const dynamicColumns = keys.map((key) => ({
           Header: key,
           accessor: key,
-          Cell: ({ value }) => (
-            <Tooltip title={value} arrow>
-              <span>{value}</span>
-            </Tooltip>
-          ),
-          Filter: DefaultColumnFilter(key, rowsWithIds),
+          Cell: ({ value, row }) =>
+            key === "תאור הנחיה" ? (
+              <div style={{cursor: "pointer"}}>
+                <Button onClick={() => handleCopyToClipboard(value)}>
+                {value}
+                </Button>
+              </div>
+            ) : (
+              <Tooltip title={value} arrow>
+                <span>{value}</span>
+              </Tooltip>
+            ),
+          Filter: DefaultColumnFilter(key, rowsWithIds, handleSearchChange),
         }));
         setColumns(dynamicColumns);
 
@@ -53,11 +63,25 @@ const TablePage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPageData(page, pageSize);
-  }, [page, pageSize]);
+  const handleSearchChange = (event, value) => {
+    setSelectedSearchValue(value || "");
+  };
 
-  const DefaultColumnFilter = (columnKey, rows) => {
+  const handleResetSearch = () => {
+    setSelectedSearchValue("");
+    setPage(1);
+  };
+
+  const handleCopyToClipboard = (value) => {
+    navigator.clipboard.writeText(value);
+    setCopiedValue(value);
+  };
+
+  useEffect(() => {
+    fetchPageData(page, pageSize, selectedSearchValue);
+  }, [page, pageSize, selectedSearchValue]);
+
+  const DefaultColumnFilter = (columnKey, rows, handleSearchChange) => {
     const options = [...new Set(rows.map((row) => row[columnKey]))];
 
     return ({ column: { filterValue, setFilter } }) => (
@@ -65,7 +89,10 @@ const TablePage = () => {
         {options ? (
           <Autocomplete
             value={filterValue || null}
-            onChange={(event, value) => setFilter(value || undefined)}
+            onChange={(event, value) => {
+              setFilter(value || undefined);
+              handleSearchChange(event, value);
+            }}
             options={options}
             getOptionLabel={(option) => option}
             renderInput={(params) => (
@@ -75,7 +102,10 @@ const TablePage = () => {
         ) : (
           <Select
             value={filterValue || ""}
-            onChange={(event) => setFilter(event.target.value || undefined)}
+            onChange={(event) => {
+              setFilter(event.target.value || undefined);
+              handleSearchChange(event, event.target.value);
+            }}
             displayEmpty
             inputProps={{ "aria-label": `Select filter for ${columnKey}` }}
           >
@@ -101,21 +131,15 @@ const TablePage = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state: { filters },
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageSize },
-    },
-    useFilters
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        initialState: { pageSize },
+      },
+      useFilters
+    );
 
   return (
     <div className="table-container">
@@ -124,13 +148,22 @@ const TablePage = () => {
           Previous
         </Button>
         <Button onClick={handleNextPage}>Next</Button>
+        <Button onClick={handleResetSearch}>Reset Search</Button>
       </div>
       <table {...getTableProps()} className="custom-table">
-        <thead>
+        <thead key={uuidv4()}>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()} className="custom-header">
+            <tr
+              {...headerGroup.getHeaderGroupProps()}
+              className="custom-header"
+              key={uuidv4()}
+            >
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className="custom-cell">
+                <th
+                  {...column.getHeaderProps()}
+                  className="custom-cell"
+                  key={column.id}
+                >
                   {column.render("Header")}
                   <div>{column.canFilter ? column.render("Filter") : null}</div>
                 </th>
@@ -142,9 +175,13 @@ const TablePage = () => {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} className="custom-row">
+              <tr {...row.getRowProps()} className="custom-row" key={row.id}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} className="custom-cell">
+                  <td
+                    {...cell.getCellProps()}
+                    className="custom-cell"
+                    key={uuidv4()}
+                  >
                     {cell.render("Cell")}
                   </td>
                 ))}

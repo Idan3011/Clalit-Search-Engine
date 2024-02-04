@@ -1,18 +1,38 @@
 import pool from "../config/db.js";
 import STATUS_CODES from "../constants/statusCode.js";
 
-
 export const getAllData = async (req, res) => {
   try {
     const page = req.query.page || 1;
     const pageSize = req.query.pageSize || 50;
     const offset = (page - 1) * pageSize;
 
-    const [rows, fields] = await pool.query(
-      "SELECT * FROM `Clalit_Search` LIMIT ?, ?",
-      [offset, Number(pageSize)]
-    );
-    res.setHeader('Content-Type', 'application/json');
+    let query = "SELECT * FROM `Clalit_Search`";
+    const params = [];
+
+    const columns = [
+      "`תאור התמחות`",
+      "`תאור הנחיה`",
+      "`מספר רופא`",
+      "`שם רופא`",
+      "`תאור אתר`",
+    ];
+    if (req.query.searchQuery) {
+      const searchQuery = req.query.searchQuery;
+
+      query +=
+        " WHERE " + columns.map((column) => `${column} LIKE ?`).join(" OR ");
+
+      columns.forEach((column) => {
+        params.push(`%${searchQuery}%`);
+      });
+    }
+    query += " LIMIT ?, ?";
+    params.push(offset, Number(pageSize));
+
+    const [rows, fields] = await pool.query(query, params);
+
+    res.setHeader("Content-Type", "application/json");
     res.status(STATUS_CODES.OK).send(rows);
   } catch (error) {
     console.error(error);

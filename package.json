@@ -3,7 +3,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "pandas": "^0.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"
