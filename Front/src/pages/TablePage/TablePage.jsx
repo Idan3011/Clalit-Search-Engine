@@ -142,6 +142,9 @@ const TablePage = () => {
     );
 
   return (
+    <div className="TablePage">
+
+    
     <div className="table-container">
       <div className="pagination-container">
         <Button onClick={handlePrevPage} disabled={page === 1}>
@@ -150,6 +153,9 @@ const TablePage = () => {
         <Button onClick={handleNextPage}>Next</Button>
         <Button onClick={handleResetSearch}>Reset Search</Button>
       </div>
+      <div className="table-wrapper">
+
+     
       <table {...getTableProps()} className="custom-table">
         <thead key={uuidv4()}>
           {headerGroups.map((headerGroup) => (
@@ -190,6 +196,8 @@ const TablePage = () => {
           })}
         </tbody>
       </table>
+      </div>
+    </div>
     </div>
   );
 };
