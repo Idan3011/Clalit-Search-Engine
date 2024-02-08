@@ -3,5 +3,3 @@ data.csv
 node_modules
 venv
 .idea
-package.json
-package-lock.json
