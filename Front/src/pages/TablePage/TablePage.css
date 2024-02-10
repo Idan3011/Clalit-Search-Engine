@@ -25,6 +25,7 @@
   padding: 8px;
   text-align: left;
   width: 50%;
+  z-index: 3;
 }
 
 .custom-header {
@@ -38,6 +39,7 @@
 
 .custom-row:nth-child(even) {
   background-color: #ebe3d5;
+ 
 }
 
 .custom-cell {

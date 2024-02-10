@@ -4,10 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
-console.log("db_host: ", DB_HOST);
-console.log("DB_USER: ", DB_USER);
-console.log("DB_PASSWORD: ", DB_PASSWORD);
-console.log("DB_DATABASE: ", DB_DATABASE);
+
 
 const pool = createPool({
   host: DB_HOST || "",

@@ -39,10 +39,10 @@ const TablePage = () => {
           Header: key,
           accessor: key,
           Cell: ({ value, row }) =>
-            key === "תאור הנחיה" ? (
-              <div style={{cursor: "pointer"}}>
+            key ==="הנחיות ללקוח" ? (
+              <div style={{ cursor: "pointer" }}>
                 <Button onClick={() => handleCopyToClipboard(value)}>
-                {value}
+                  {value}
                 </Button>
               </div>
             ) : (
@@ -143,61 +143,63 @@ const TablePage = () => {
 
   return (
     <div className="TablePage">
-
-    
-    <div className="table-container">
-      <div className="pagination-container">
-        <Button onClick={handlePrevPage} disabled={page === 1}>
-          Previous
-        </Button>
-        <Button onClick={handleNextPage}>Next</Button>
-        <Button onClick={handleResetSearch}>Reset Search</Button>
-      </div>
-      <div className="table-wrapper">
-
-     
-      <table {...getTableProps()} className="custom-table">
-        <thead key={uuidv4()}>
-          {headerGroups.map((headerGroup) => (
-            <tr
-              {...headerGroup.getHeaderGroupProps()}
-              className="custom-header"
-              key={uuidv4()}
-            >
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  className="custom-cell"
-                  key={column.id}
+      <div className="table-container">
+        <div className="pagination-container">
+          <Button onClick={handlePrevPage} disabled={page === 1}>
+            Previous
+          </Button>
+          <Button onClick={handleNextPage}>Next</Button>
+          <Button onClick={handleResetSearch}>Reset Search</Button>
+        </div>
+        <div className="table-wrapper">
+          <table {...getTableProps()} className="custom-table">
+            <thead key={uuidv4()}>
+              {headerGroups.map((headerGroup) => (
+                <tr
+                  {...headerGroup.getHeaderGroupProps()}
+                  className="custom-header"
+                  key={uuidv4()}
                 >
-                  {column.render("Header")}
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
-                </th>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps()}
+                      className="custom-cell"
+                      key={column.id}
+                    >
+                      {column.render("Header")}
+                      <div>
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} className="custom-row" key={row.id}>
-                {row.cells.map((cell) => (
-                  <td
-                    {...cell.getCellProps()}
-                    className="custom-cell"
-                    key={uuidv4()}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr
+                    {...row.getRowProps()}
+                    className="custom-row"
+                    key={row.id}
                   >
-                    {cell.render("Cell")}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className="custom-cell"
+                        key={uuidv4()}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

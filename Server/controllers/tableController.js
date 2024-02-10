@@ -12,10 +12,10 @@ export const getAllData = async (req, res) => {
 
     const columns = [
       "`תאור התמחות`",
-      "`תאור הנחיה`",
-      "`מספר רופא`",
+      "`קוד התמחות`",
       "`שם רופא`",
-      "`תאור אתר`",
+      "`שם מרפאה`",
+      "`הנחיות ללקוח`",
     ];
     if (req.query.searchQuery) {
       const searchQuery = req.query.searchQuery;

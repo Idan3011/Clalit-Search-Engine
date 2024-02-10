@@ -15,7 +15,7 @@ csv_file_path='./data.csv'
 
 table_name = 'Clalit_Search'
 columns = [
-    'תאור התמחות', 'תאור הנחיה', 'מספר רופא', 'שם רופא', 'תאור אתר'
+     "הנחיות ללקוח", "שם מרפאה", "שם רופא", "קוד התמחות", "תאור התמחות"
 ]
 chunk_size = 10000 
 chunks = pd.read_csv(csv_file_path, encoding='ISO-8859-8', chunksize=chunk_size, usecols=columns)
