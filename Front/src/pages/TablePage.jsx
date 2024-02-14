@@ -226,7 +226,6 @@ const SearchComponent = () => {
                           }}
                         >
                           {result[column]}{" "}
-                          {/* Access value using column name */}
                         </TableCell>
                       )
                     )}
@@ -244,6 +243,10 @@ const SearchComponent = () => {
         page={newPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="שורות לעמוד:"
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} מתוך ${count}`
+        }
       />
       <Snackbar
         open={openSnackbar}
@@ -251,7 +254,7 @@ const SearchComponent = () => {
         onClose={handleCloseSnackbar}
       >
         <Alert onClose={handleCloseSnackbar} severity="success">
-          Copied: {copiedText}
+          הועתק: {copiedText}
         </Alert>
       </Snackbar>
     </div>

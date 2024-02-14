@@ -107,3 +107,18 @@
 }
 
 
+.pagination .MuiTablePagination-actions {
+  justify-content: flex-end;
+}
+
+.pagination .MuiTablePagination-toolbar {
+  justify-content: space-between;
+}
+
+.pagination .MuiIconButton-root:first-child {
+  order: 2;
+}
+
+.pagination .MuiIconButton-root:last-child {
+  order: 1;
+}
