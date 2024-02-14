@@ -1,5 +1,6 @@
 import "./App.css";
-import TablePage from "./pages/TablePage/TablePage";
+import TablePage from "./pages/TablePage";
+
 
 function App() {
   return (

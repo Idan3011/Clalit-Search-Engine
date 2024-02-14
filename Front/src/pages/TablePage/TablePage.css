@@ -1,56 +1,109 @@
+.search-container {
+  font-family: Arial, sans-serif;
+  padding: 6rem;
+}
 
+.search-table {
+  margin-bottom: 20px;
+}
 
-.table-container {
+.search-input {
   width: 100%;
-  padding: 2rem;
-  border: 0.1rem solid rgb(176, 166, 149); 
-  border-radius: 0.5rem;
 }
 
-.table-wrapper {
-  overflow: auto;
-  max-height: 500px;
+.search-results-table {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.custom-header,
-.custom-row,
-.custom-cell {
-  border: 1px solid rgb(176, 166, 149);
-  padding: 8px;
-  text-align: left;
-  width: 50%;
-  z-index: 3;
-}
-
-.custom-header {
-  background-color: #f3eeea;
-  color: rgb(119, 107, 93);
+.search-results-table thead th {
+  background-color: #4caf50;
+  color: white;
   font-weight: bold;
   position: sticky;
   top: 0;
-  z-index: 1;
-}
-
-.custom-row:nth-child(even) {
-  background-color: #ebe3d5;
- 
-}
-
-.custom-cell {
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 1rem;
   text-align: center;
-  color: #776b5d;
 }
 
-.pagination-container {
-  margin-bottom: 10px;
+.search-results-table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
 }
+
+.search-results-table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.search-results-table td {
+  text-align: center;
+}
+
+.copy-to-clipboard {
+  background-color: #6fd871;
+}
+
+.copy-text {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.copy-button {
+  margin-left: 5px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  background-color: #45a049;
+}
+
+.clicked-row {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.copy-to-clipboard {
+  cursor: pointer;
+}
+
+.copy-to-clipboard:hover {
+  background-color: #f0f0f0;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.table-cell {
+  text-align: center;
+  padding: 8px;
+}
+
+.table-header {
+  text-align: center;
+  padding: 8px;
+}
+
+.custom-select .Select-menu-outer {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.custom-select .Select-option {
+  text-align: center;
+}
+
+.no-horizontal-scroll{
+  border-radius: 0.5rem;
+}
+
+

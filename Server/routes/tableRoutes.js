@@ -1,11 +1,14 @@
 import express from 'express';
-import { getAllData} from '../controllers/tableController.js';
+import {getColumnOptions, searchColumnsAndFilterResult} from '../controllers/tableController.js';
 
 const router = express.Router();
 
-// Route to get all data
-router.get('/search/all', getAllData);
+// Route to get column options for a specific column
+router.get('/search/columnOptions/:columnName', getColumnOptions);
 
+
+// GET table row's based on search parameters
+router.get('/search', searchColumnsAndFilterResult);
 
 
 
