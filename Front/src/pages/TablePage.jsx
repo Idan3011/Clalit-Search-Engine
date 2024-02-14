@@ -71,7 +71,14 @@ const SearchComponent = () => {
   const handleInputChange = (value, index) => {
     inputRefs.current[index].value = value;
 
-    setSearchParams({ ...searchParams, [`searchParam${index + 1}`]: value });
+    if (value === "") {
+      // If the input value is empty, remove the corresponding search parameter
+      const updatedSearchParams = { ...searchParams };
+      delete updatedSearchParams[`searchParam${index + 1}`];
+      setSearchParams(updatedSearchParams);
+    } else {
+      setSearchParams({ ...searchParams, [`searchParam${index + 1}`]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -193,30 +200,36 @@ const SearchComponent = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((result, rowIndex) => (
                   <TableRow key={rowIndex} style={{ textAlign: "center" }}>
-                    {Object.keys(result).map((key, cellIndex) => (
-                      <TableCell
-                        key={cellIndex}
-                        className={`table-cell ${
-                          key === "הנחיות ללקוח" ? "copy-to-clipboard" : ""
-                        }`}
-                        onClick={() => {
-                          if (key === "הנחיות ללקוח") {
-                            handleCopyToClipboard(result[key]);
-                            setClickedCell(cellIndex);
-                            setTimeout(() => {
-                              setClickedCell(null);
-                            }, 2000);
-                          }
-                        }}
-                        style={{
-                          backgroundColor:
-                            clickedCell === cellIndex ? "#f0f0f0" : "",
-                          textAlign: "right",
-                        }}
-                      >
-                        {result[key]}
-                      </TableCell>
-                    ))}
+                    {columns.map(
+                      (
+                        column,
+                        columnIndex // Iterate over columns array
+                      ) => (
+                        <TableCell
+                          key={columnIndex}
+                          className={`table-cell ${
+                            column === "הנחיות ללקוח" ? "copy-to-clipboard" : ""
+                          }`}
+                          onClick={() => {
+                            if (column === "הנחיות ללקוח") {
+                              handleCopyToClipboard(result[column]);
+                              setClickedCell(columnIndex);
+                              setTimeout(() => {
+                                setClickedCell(null);
+                              }, 2000);
+                            }
+                          }}
+                          style={{
+                            backgroundColor:
+                              clickedCell === columnIndex ? "#f0f0f0" : "",
+                            textAlign: "right",
+                          }}
+                        >
+                          {result[column]}{" "}
+                          {/* Access value using column name */}
+                        </TableCell>
+                      )
+                    )}
                   </TableRow>
                 ))}
             </TableBody>
