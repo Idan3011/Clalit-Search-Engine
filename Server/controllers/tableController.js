@@ -12,6 +12,7 @@ export const getAllData = async (req, res) => {
     const columns = [
       "`תאור התמחות`",
       "`קוד התמחות`",
+      "`סוג הנחיה`",
       "`שם רופא`",
       "`שם מרפאה`",
       "`הנחיות ללקוח`",
@@ -84,6 +85,7 @@ export const searchColumnsAndFilterResult = async (req, res) => {
     const columns = [
       "`תאור התמחות`",
       "`קוד התמחות`",
+      "`סוג הנחיה`",
       "`שם רופא`",
       "`שם מרפאה`",
     ];
