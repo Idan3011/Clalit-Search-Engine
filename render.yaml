@@ -1,13 +1,15 @@
 services:
-  - name: front
-    buildCommand: npm run build
-    startCommand: npm start
+  - name: Front
+    type: web
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
     env:
       - key: NODE_ENV
         value: production
-  - name: server
+  - name: Server
+    type: web
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
     env:
       - key: NODE_ENV
         value: production
