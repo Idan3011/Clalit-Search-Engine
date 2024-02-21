@@ -8,12 +8,4 @@
   min-height: 100vh;
   background-image: url("/images/Corona_BG.jpg");
 }
-.logo-container {
-  background-image: url("/images/logo-clalit-newsite.svg");
-  margin-left: 4rem;
-  margin-top: 2rem;
-  width: 12rem;
-  height: 3rem;
-  background-repeat: no-repeat;
-  position: absolute;
-}
+

@@ -7,14 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "react-scripts start"
   },
   "dependencies": {
     "@ag-grid-enterprise/all-modules": "^27.3.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.7",
-    "@mui/material": "^5.15.9",
+    "@mui/material": "^5.15.10",
     "@mui/x-data-grid": "^6.19.4",
     "ag-grid-community": "^31.0.3",
     "ag-grid-enterprise": "^31.0.3",
@@ -25,6 +26,7 @@
     "querystring": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1",
     "react-select": "^5.8.0",
     "react-table": "^7.8.0",
     "react-window": "^1.8.10",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import axios from "../services/api";
 import Select from "react-select";
-import "../pages/TablePage/TablePage.css";
+import '../pages/TablePage/TablePage.css'
 const AutocompleteInput = forwardRef(
   ({ columnName, placeholder, onChange }, ref) => {
     const [options, setOptions] = useState([]);

@@ -1,13 +1,23 @@
+import React from "react";
 import "./App.css";
-import TablePage from "./pages/TablePage";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import TablePage from "./pages/TablePage/TablePage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import { AuthProvider } from "../context/AuthContext";
 
 function App() {
   return (
-    <div className="App">
-      <div className="logo-container"></div>
-      <TablePage />
-    </div>
+    <Router>
+          <AuthProvider>
+      <div className="App">
+        
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+            <Route path="/table" element={<TablePage />} />
+        </Routes>
+      </div>
+          </AuthProvider>
+    </Router>
   );
 }
 
