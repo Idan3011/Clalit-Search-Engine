@@ -2,7 +2,7 @@ services:
   - name: Front
     type: web
     buildCommand: npm install && npm run build
-    startCommand: npm run start
+    startCommand: serve -s dist
     env:
       - key: NODE_ENV
         value: production
