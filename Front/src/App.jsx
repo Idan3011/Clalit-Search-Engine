@@ -10,7 +10,6 @@ function App() {
     <Router>
           <AuthProvider>
       <div className="App">
-        
         <Routes>
           <Route path="/" element={<LoginPage />} />
             <Route path="/table" element={<TablePage />} />
