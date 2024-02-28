@@ -37,7 +37,7 @@ const SearchComponent = () => {
   const [clickedCell, setClickedCell] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const { authenticated, logout } = useContext(AuthContext);
+  const { authenticated, logout, logoutWithCleanup } = useContext(AuthContext); // Include logoutWithCleanup from AuthContext
   const navigate = useNavigate();
   useEffect(() => {
     if (!authenticated) {
@@ -192,144 +192,147 @@ const SearchComponent = () => {
   const newPage = Math.max(page, 0);
   return (
     <>
-    <div className="logo-container"></div>
-    <div className="search-container">
-      <form onSubmit={handleSubmit}>
-        <div
-          className="table-container-wrapper"
-          style={{ maxHeight: "500px", overflowY: "auto" }}
+      <div className="logo-container"></div>
+      <div className="search-container">
+        <form onSubmit={handleSubmit}>
+          <div
+            className="table-container-wrapper"
+            style={{ maxHeight: "500px", overflowY: "auto" }}
           >
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {columns.map((columnName, index) => (
+                      <TableCell key={index} style={{ textAlign: "center" }}>
+                        <AutocompleteInput
+                          ref={(el) => (inputRefs.current[index] = el)}
+                          id={`input-${columnName}`}
+                          onChange={(value) => handleInputChange(value, index)}
+                          placeholder={columnName}
+                          columnName={columnName}
+                        />
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={loading}
+                      >
+                        חיפוש
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="contained" onClick={handleReset}>
+                        רענון
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+              </Table>
+            </TableContainer>
+          </div>
+        </form>
+        {loading && (
+          <div className="loader-container">
+            <CircularProgress color="secondary" />
+          </div>
+        )}
+        <div
+          className="table-body-wrapper"
+          style={{ maxHeight: "500px", overflowY: "auto" }}
+        >
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
-                <TableRow>
-                  {columns.map((columnName, index) => (
-                    <TableCell key={index} style={{ textAlign: "center" }}>
-                      <AutocompleteInput
-                        ref={(el) => (inputRefs.current[index] = el)}
-                        id={`input-${columnName}`}
-                        onChange={(value) => handleInputChange(value, index)}
-                        placeholder={columnName}
-                        columnName={columnName}
-                        />
+                <TableRow style={{ textAlign: "center" }}>
+                  {columns.map((column, index) => (
+                    <TableCell
+                      key={index}
+                      className="table-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      {column}
                     </TableCell>
                   ))}
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      חיפוש
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="contained" onClick={handleReset}>
-                      רענון
-                    </Button>
-                  </TableCell>
                 </TableRow>
               </TableHead>
+              <TableBody>
+                {searchResults
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((result, rowIndex) => (
+                    <TableRow key={rowIndex} style={{ textAlign: "center" }}>
+                      {columns.map(
+                        (
+                          column,
+                          columnIndex // Iterate over columns array
+                        ) => (
+                          <TableCell
+                            key={columnIndex}
+                            className={`table-cell ${
+                              column === "הנחיות ללקוח"
+                                ? "copy-to-clipboard rtl-text"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              if (column === "הנחיות ללקוח") {
+                                handleCopyToClipboard(result[column]);
+                                setClickedCell(columnIndex);
+                                setTimeout(() => {
+                                  setClickedCell(null);
+                                }, 2000);
+                              }
+                            }}
+                            style={{
+                              backgroundColor:
+                                clickedCell === columnIndex ? "#f0f0f0" : "",
+                              textAlign: "right",
+                            }}
+                          >
+                            {column === "הנחיות ללקוח"
+                              ? alterInstructions(result[column])
+                              : result[column]}{" "}
+                          </TableCell>
+                        )
+                      )}
+                    </TableRow>
+                  ))}
+              </TableBody>
             </Table>
           </TableContainer>
         </div>
-      </form>
-      {loading && (
-        <div className="loader-container">
-          <CircularProgress color="secondary" />
-        </div>
-      )}
-      <div
-        className="table-body-wrapper"
-        style={{ maxHeight: "500px", overflowY: "auto" }}
+        <TablePagination
+          rowsPerPageOptions={[25, 50, 100]}
+          component="div"
+          count={searchResults.length}
+          rowsPerPage={rowsPerPage}
+          page={newPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="שורות לעמוד:"
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to} מתוך ${count}`
+          }
+        />
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={2000}
+          onClose={handleCloseSnackbar}
         >
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow style={{ textAlign: "center" }}>
-                {columns.map((column, index) => (
-                  <TableCell
-                  key={index}
-                    className="table-header"
-                    style={{ textAlign: "center" }}
-                  >
-                    {column}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {searchResults
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((result, rowIndex) => (
-                  <TableRow key={rowIndex} style={{ textAlign: "center" }}>
-                    {columns.map(
-                      (
-                        column,
-                        columnIndex // Iterate over columns array
-                        ) => (
-                          <TableCell
-                          key={columnIndex}
-                          className={`table-cell ${
-                            column === "הנחיות ללקוח"
-                            ? "copy-to-clipboard rtl-text"
-                            : ""
-                          }`}
-                          onClick={() => {
-                            if (column === "הנחיות ללקוח") {
-                              handleCopyToClipboard(result[column]);
-                              setClickedCell(columnIndex);
-                              setTimeout(() => {
-                                setClickedCell(null);
-                              }, 2000);
-                            }
-                          }}
-                          style={{
-                            backgroundColor:
-                              clickedCell === columnIndex ? "#f0f0f0" : "",
-                            textAlign: "right",
-                          }}
-                        >
-                          {column === "הנחיות ללקוח"
-                            ? alterInstructions(result[column])
-                            : result[column]}{" "}
-                        </TableCell>
-                      )
-                    )}
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-      <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
-        component="div"
-        count={searchResults.length}
-        rowsPerPage={rowsPerPage}
-        page={newPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage="שורות לעמוד:"
-        labelDisplayedRows={({ from, to, count }) =>
-        `${from}-${to} מתוך ${count}`
-      }
-      />
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={2000}
-        onClose={handleCloseSnackbar}
-        >
-        <Alert onClose={handleCloseSnackbar} severity="success">
-          הועתק: {copiedText}
-        </Alert>
-      </Snackbar>
-      {searchResults.length > 0 && ( // Only render the button if search results are available
-        <Button onClick={handleCopyAllDescriptions}>ההעתק את כל ההנחיות</Button>
+          <Alert onClose={handleCloseSnackbar} severity="success">
+            הועתק: {copiedText}
+          </Alert>
+        </Snackbar>
+        {searchResults.length > 0 && ( // Only render the button if search results are available
+          <Button onClick={handleCopyAllDescriptions}>
+            ההעתק את כל ההנחיות
+          </Button>
         )}
-    </div>
-    <Button onClick={logout}>התנתק</Button>
-        </>
+      </div>
+      <Button onClick={logoutWithCleanup}>התנתק</Button>{" "}
+      {/* Use logoutWithCleanup instead of logout */}
+    </>
   );
 };
 
