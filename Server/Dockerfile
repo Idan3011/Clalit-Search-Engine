@@ -11,7 +11,8 @@ ARG NODE_VERSION=21.6.0
 FROM node:${NODE_VERSION}-alpine
 
 
-RUN apk add --no-cache mariadb-client
+RUN apk add --no-cache mariadb-client \
+    bash
 
 # Use production node environment by default.
 ENV NODE_ENV production
@@ -40,4 +41,4 @@ RUN chmod +x /usr/src/app/entrypoint
 EXPOSE 3000
 
 # Run the application.
-ENTRYPOINT [ "./entrypoint" ]
+ENTRYPOINT [ "bash", "/usr/src/app/entrypoint" ]

@@ -13,6 +13,7 @@ ARG NODE_VERSION=21.6.0
 FROM node:${NODE_VERSION} AS builder
 
 
+
 ENV NODE_ENV production
 
 RUN npm i -g vite
@@ -31,9 +32,11 @@ COPY vite.config.js ./
 
 RUN yarn add vite
 RUN yarn add @vitejs/plugin-react
+RUN npm install -g serve
 
 COPY . .
 
 RUN yarn build
 
-CMD yarn preview
+
+CMD serve -s /app/dist -l 8080

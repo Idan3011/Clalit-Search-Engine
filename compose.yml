@@ -7,8 +7,6 @@ services:
     container_name: seatch_engine_front
     ports:
       - '8080:8080'
-    volumes:
-      - ./Front:/app
     env_file:
       - .env
     depends_on:
@@ -21,8 +19,6 @@ services:
     command: npm start
     ports:
       - '3000:3000'
-    volumes:
-      - ./Server:/app
     env_file:
       - .env
     environment:
@@ -43,11 +39,13 @@ services:
     image: mysql:latest
     container_name: mysql
     restart: always
+    env_file:
+      - .env
     environment:
-      MYSQL_DATABASE: 'u636091749_clt_db'
-      MYSQL_USER: 'u636091749_clt_user'
-      MYSQL_PASSWORD: 'J+yx:uQ9'
-      MYSQL_ROOT_PASSWORD: 'J+yx:uQ9'
+      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
     ports:
       - '3306:3306'
     expose:
