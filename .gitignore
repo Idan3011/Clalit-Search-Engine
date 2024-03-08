@@ -3,3 +3,5 @@ data.csv
 node_modules
 venv
 .idea
+**/myenv
+**/myenv/*
