@@ -1,0 +1,27 @@
+#!/bin/bash
+
+DB_HOST=${DB_HOST:-mysql}
+DB_USER=${DB_USER:-root}
+DB_DATABASE=${DB_DATABASE:-mysql}
+DB_PORT=${DB_PORT:-3306}
+DB_PASSWORD=${DB_PASSWORD:-mysql}
+
+# Note: For MySQL, it's generally recommended to use a my.cnf file for password management, but for simplicity we'll pass it via command line here.
+export MYSQL_PWD="$DB_PASSWORD"
+
+check_mysql() {
+    echo "Checking if MySQL ($DB_HOST:$DB_PORT) is up..."
+    mysqladmin ping --host="$DB_HOST" --port="$DB_PORT" --user="$DB_USER" --silent
+    return $?
+}
+
+# Wait for MySQL to be up
+until check_mysql; do
+    echo "MySQL is not up yet. Waiting..."
+    sleep 5 # Wait for 5 seconds before checking again
+done
+
+echo "MySQL is up and running."
+
+# Run the main process
+exec "$@"

@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  front:
+    build:
+      context: ./Front
+    container_name: seatch_engine_front
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./Front:/app
+    env_file:
+      - .env
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./Server
+    container_name: seatch_engine_server
+    command: npm start
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./Server:/app
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mysql
+    depends_on:
+      - mysql
+      # - sql_config
+
+  # sql_config:
+  #   build:
+  #     context: ./mysql_config
+  #     dockerfile: ../docker/Dockerfile.mysql
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'u636091749_clt_db'
+      MYSQL_USER: 'u636091749_clt_user'
+      MYSQL_PASSWORD: 'J+yx:uQ9'
+      MYSQL_ROOT_PASSWORD: 'J+yx:uQ9'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+
+volumes:
+  my-db:

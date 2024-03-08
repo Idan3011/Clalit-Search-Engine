@@ -4,7 +4,7 @@ from sqlalchemy import text
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 # Connection to MySQL
 host = os.getenv('HOST')
@@ -51,12 +51,12 @@ engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}/{databa
 # Define the SQL CREATE TABLE statement with the desired column order
 create_table_query = text(f"""
 CREATE TABLE IF NOT EXISTS {table_name} (
-    `הנחיות ללקוח` VARCHAR(255),
-    `שם מרפאה` VARCHAR(255),
-    `שם רופא` VARCHAR(255),
-    `קוד התמחות` VARCHAR(255),
-    `סוג הנחיה` VARCHAR(255),
-    `תאור התמחות` VARCHAR(255)
+    `הנחיות ללקוח` VARCHAR(1024),
+    `שם מרפאה` VARCHAR(1024),
+    `שם רופא` VARCHAR(1024),
+    `קוד התמחות` VARCHAR(1024),
+    `סוג הנחיה` VARCHAR(1024),
+    `תאור התמחות` VARCHAR(1024)
 )
 """)
 
