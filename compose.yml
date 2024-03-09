@@ -2,7 +2,7 @@ version: '3'
 
 services:
   frontend:
-    image: search-engine/frontend-nginx:latest
+    image: search-engine/frontend:latest
     container_name: search_enging_frontend
     restart: unless-stopped
     ports:
