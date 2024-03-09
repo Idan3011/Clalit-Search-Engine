@@ -4,6 +4,12 @@ from sqlalchemy import text
 import os
 from dotenv import load_dotenv
 
+csv_file_path = './data.csv'
+
+if not os.path.exists(csv_file_path):
+    print(f'File not found: {csv_file_path}, please make sure the file exists. Exiting...')
+    exit()
+
 load_dotenv(override=True)
 
 # Connection to MySQL
@@ -12,7 +18,7 @@ user = os.getenv('USER')
 password = os.getenv('PASSWORD')
 database = os.getenv('DATABASE')
 
-csv_file_path = './data.csv'
+
 
 table_name = 'Clalit_Search'
 columns_mapping = {

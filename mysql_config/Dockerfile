@@ -9,6 +9,11 @@
 ARG PYTHON_VERSION=3.11.6
 FROM python:${PYTHON_VERSION}-slim as base
 
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
 
@@ -43,9 +48,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Copy the source code into the container.
 COPY . .
+COPY ./entrypoint /app/entrypoint
+
+RUN chmod +x /app/entrypoint
 
 # Expose the port that the application listens on.
 
-
+ENTRYPOINT [ "bash", "/app/entrypoint" ]
 # Run the application.
-CMD python main.py
+

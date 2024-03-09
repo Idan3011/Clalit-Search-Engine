@@ -5,3 +5,5 @@ venv
 .idea
 **/myenv
 **/myenv/*
+volumes/
+volumes/*

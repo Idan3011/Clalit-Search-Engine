@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  front:
-    build:
-      context: ./Front
-    container_name: seatch_engine_front
+  frontend:
+    image: search-engine/frontend-nginx:latest
+    container_name: search_enging_frontend
+    restart: unless-stopped
     ports:
       - '8080:8080'
     env_file:
@@ -13,9 +13,9 @@ services:
       - server
 
   server:
-    build:
-      context: ./Server
-    container_name: seatch_engine_server
+    image: search-engine/backend:latest
+    container_name: search_enging_backend
+    restart: unless-stopped
     command: npm start
     ports:
       - '3000:3000'
@@ -25,33 +25,29 @@ services:
       - DB_HOST=mysql
     depends_on:
       - mysql
-      # - sql_config
 
-  # sql_config:
-  #   build:
-  #     context: ./mysql_config
-  #     dockerfile: ../docker/Dockerfile.mysql
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - db
+  sql_config:
+    image: search-engine/db-config:latest
+    container_name: search_engine_db_config
+    command: python main.py
+    env_file:
+      - .env
+    environment:
+      - HOST=mysql
+    volumes:
+      - ./data.csv:/app/data.csv
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql:latest
     container_name: mysql
     restart: always
     env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: $DB_DATABASE
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      - .env.mysql
     ports:
       - '3306:3306'
     expose:
       - '3306'
     volumes:
-      - my-db:/var/lib/mysql
-
-volumes:
-  my-db:
+      - ./volumes/mysql:/var/lib/mysql

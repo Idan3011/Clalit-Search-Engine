@@ -17,7 +17,7 @@ const LoginPage = () => {
 	const navigate = useNavigate();
 	const { login } = useContext(AuthContext);
 	const PASSWORD = import.meta.env.VITE_REACT_APP_ACCSESS_TO_TABLE_PAGE;
-	console.log(PASSWORD);
+
 	const handleLogin = (e) => {
 		e.preventDefault();
 		if (password === PASSWORD) {
