@@ -8,3 +8,4 @@ venv
 volumes/
 volumes/*
 .env.*
+**/docker-build

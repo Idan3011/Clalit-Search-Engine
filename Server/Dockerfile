@@ -16,7 +16,12 @@ RUN apk add --no-cache mariadb-client \
 
 # Use production node environment by default.
 ENV NODE_ENV production
-
+ENV PORT=3000
+ENV DB_HOST=mysql
+ENV DB_USER=u636091749_clt_user
+ENV DB_PASSWORD=J+yx:uQ9
+ENV DB_DATABASE=u636091749_clt_db
+ENV DB_CSV_FILE_PATH=./data.csv
 
 WORKDIR /usr/src/app
 

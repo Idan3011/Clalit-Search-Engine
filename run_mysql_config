@@ -1,3 +1,10 @@
 #!/bin/bash
 
+FILE_NAME=data.csv
+
+DEFAULT_FILE="${PWD}/${FILE_NAME}"
+
+SOURCE=${1:-$DEFAULT_FILE}
+
+docker compose cp $SOURCE sql_config:/data.csv
 docker compose run --rm -it sql_config

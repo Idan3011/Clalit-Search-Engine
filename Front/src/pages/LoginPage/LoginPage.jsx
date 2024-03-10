@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	TextField,
@@ -18,6 +18,10 @@ const LoginPage = () => {
 	const { login } = useContext(AuthContext);
 	const PASSWORD = import.meta.env.VITE_REACT_APP_ACCSESS_TO_TABLE_PAGE;
 
+	// useEffect(() => {
+	// 	login();
+	// 	navigate('/table');
+	// }, []);
 	const handleLogin = (e) => {
 		e.preventDefault();
 		if (password === PASSWORD) {
