@@ -39,11 +39,11 @@ const SearchComponent = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(25);
 	const { authenticated, logout, logoutWithCleanup } = useContext(AuthContext); // Include logoutWithCleanup from AuthContext
 	const navigate = useNavigate();
-	useEffect(() => {
-		if (!authenticated) {
-			navigate('/');
-		}
-	}, [authenticated, navigate]);
+	// useEffect(() => {
+	// 	if (!authenticated) {
+	// 		navigate('/');
+	// 	}
+	// }, [authenticated, navigate]);
 	useEffect(() => {
 		const handleKeyDown = (event) => {
 			if (event.key === 'Enter') {
