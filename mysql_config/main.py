@@ -51,7 +51,7 @@ engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}/{databa
 # Define the SQL CREATE TABLE statement with the desired column order
 create_table_query = text(f"""
 CREATE TABLE IF NOT EXISTS {table_name} (
-    `הנחיות ללקוח` VARCHAR(255),
+    `הנחיות ללקוח` VARCHAR(4000),
     `שם מרפאה` VARCHAR(255),
     `שם רופא` VARCHAR(255),
     `קוד התמחות` VARCHAR(255),
