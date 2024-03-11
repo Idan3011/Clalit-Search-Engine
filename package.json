@@ -13,6 +13,7 @@
 	},
 	"scripts": {
 		"build": "cd Front && yarn build",
-		"dev": "yarn build && nodemon ./Server/server.js"
+		"dev": "yarn build && nodemon ./Server/server.js",
+		"start": "yarn build && node ./Server/server.js"
 	}
 }
