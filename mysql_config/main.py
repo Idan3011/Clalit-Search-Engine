@@ -4,9 +4,40 @@ import os
 from dotenv import load_dotenv
 from crontab import CronTab
 import gzip
+from datetime import datetime
+import glob
+
+load_dotenv()
+def find_newest_file(directory):
+    # Change to the specified directory
+    os.chdir(directory)
+    print('directory', directory)
+    # Get a list of all files in the directory
+    files = glob.glob('*')
+    
+    # Filter out directories, leaving only files
+    files = [file for file in files if os.path.isfile(file)]
+    
+    # Get the newest file based on modification time
+    newest_file = max(files, key=os.path.getmtime)
+    
+    return newest_file
+
+external_directory = os.getenv('PATH_TO_FOLDER')
+newest_file = find_newest_file(external_directory)
+
+if newest_file:
+   
+    # update_mysql_table(newest_file)
+    print("Newest file:", newest_file)
+else:
+    print("No files found in the specified directory.")
+
+
+
 
 def update_mysql_table():
-    csv_file_path = os.getenv('CSV_FILE_PATH')
+    csv_file_path = newest_file
 
     if not os.path.exists(csv_file_path):
         print(f'File not found: {csv_file_path}, please make sure the file exists. Exiting...')
@@ -66,10 +97,13 @@ def update_mysql_table():
     )
     """)
 
-    # Execute the CREATE TABLE query
+    drop_statement = text(f"DROP TABLE IF EXISTS {table_name}")
+    with engine.connect() as connection:
+            connection.execute(drop_statement)
+
+
     with engine.connect() as connection:
         connection.execute(create_table_query)
-
     # Read CSV file in chunks and export to MySQL
     chunk_size = 10000 
     for chunk in pd.read_csv(csv_file_path, compression='gzip', encoding='ISO-8859-8', chunksize=chunk_size, skiprows=skiprows, usecols=columns_mapping.keys()):
@@ -91,4 +125,5 @@ def update_mysql_table():
 
 if __name__ == "__main__":
     update_mysql_table()
+
    
