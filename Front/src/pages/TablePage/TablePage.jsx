@@ -118,9 +118,11 @@ const SearchComponent = () => {
 		handleCloseSnackbar();
 		setSearchParams(initialSearchParams);
 	};
-	const handleCopyToClipboard = (text) => {
-		const parsedText = alterInstructions(text); // Parse the text before copying
-		navigator.clipboard.writeText(parsedText);
+	const handleCopyToClipboard = async (text) => {
+		const parsedText = alterInstructions(text);
+
+		// await navigator.clipboard.writeText(parsedText);
+		unsecuredCopyToClipboard(parsedText);
 		setCopiedText(parsedText);
 		setOpenSnackbar(true);
 	};
@@ -137,7 +139,21 @@ const SearchComponent = () => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-	const handleCopyAllDescriptions = () => {
+
+	const unsecuredCopyToClipboard = (text) => {
+		const textArea = document.createElement('textarea');
+		textArea.value = text;
+		document.body.appendChild(textArea);
+		textArea.focus();
+		textArea.select();
+		try {
+			document.execCommand('copy');
+		} catch (err) {
+			console.error('Unable to copy to clipboard', err);
+		}
+		document.body.removeChild(textArea);
+	};
+	const handleCopyAllDescriptions = async () => {
 		// Create a Set to store unique descriptions
 		const uniqueDescriptions = new Set();
 
@@ -150,15 +166,7 @@ const SearchComponent = () => {
 		const descriptionsText = [...uniqueDescriptions].join('\n');
 
 		// Copy the concatenated descriptions text to the clipboard
-		navigator.clipboard
-			.writeText(descriptionsText)
-			.then(() => {
-				console.log('Unique descriptions copied to clipboard successfully.');
-			})
-			.catch((error) => {
-				// Handle error, e.g., show an error message
-				console.error('Error copying unique descriptions to clipboard:', error);
-			});
+		unsecuredCopyToClipboard(descriptionsText);
 	};
 	const alterInstructions = (instructions) => {
 		// Reverse the occurrences of two-digit numbers

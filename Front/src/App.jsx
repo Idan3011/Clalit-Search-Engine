@@ -13,10 +13,6 @@ function App() {
 					<Routes>
 						<Route
 							path='/'
-							element={<LoginPage />}
-						/>
-						<Route
-							path='/table'
 							element={<TablePage />}
 						/>
 					</Routes>
