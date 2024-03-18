@@ -12,6 +12,7 @@ FROM python:${PYTHON_VERSION}-slim as base
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
+    cron \
     mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 # Prevents Python from writing pyc files.
@@ -52,8 +53,13 @@ COPY ./entrypoint /app/entrypoint
 
 RUN chmod +x /app/entrypoint
 
-# Expose the port that the application listens on.
+COPY ./crontab /etc/cron.d/cronfile
+RUN chmod 0644 /etc/cron.d/cronfile
 
-ENTRYPOINT [ "bash", "/app/entrypoint" ]
+RUN crontab /etc/cron.d/cronfile
+
+# Expose the port that the application listens on.
+CMD ["cron", "-f"]
+# ENTRYPOINT [ "bash", "/app/entrypoint" ]
 # Run the application.
 

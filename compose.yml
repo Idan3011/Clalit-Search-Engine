@@ -1,53 +1,58 @@
 version: '3'
 
 services:
-  # frontend:
-  #   image: search-engine/frontend-arm:latest
-  #   container_name: search_enging_frontend
-  #   restart: unless-stopped
-  #   ports:
-  #     - '8080:8080'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - server
+  #frontend:
+  #  image: search-engine/frontend-nginx:latest
+  #  container_name: search_enging_frontend
+  #  restart: unless-stopped
+  #  network_mode: host
+  #ports:
+  # - '8080:8080'
+  #  env_file:
+  #    - .env
+  #  depends_on:
+  #    - server
 
-  # server:
-  #   image: search-engine/backend-arm:latest
-  #   container_name: search_enging_backend
-  #   restart: unless-stopped
-  #   command: npm start
-  #   ports:
-  #     - '3000:3000'
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - DB_HOST=mysql
-  #   depends_on:
-  #     - mysql
+  server:
+    image: search-engine/backend:latest
+    container_name: search_enging_backend
+    restart: unless-stopped
+    network_mode: host
+    command: npm start
+    #expose:
+    #  - '3000'
+    #ports:
+    #  - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=localhost
+    depends_on:
+      - mysql
 
-  # sql_config:
-  #   image: search-engine/db-config:latest
-  #   container_name: search_engine_db_config
-  #   command: python main.py
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - HOST=mysql
-  #   volumes:
-  #     - ./data.csv:/app/data.csv
-  #   depends_on:
-  #     - mysql
+  sql_config:
+    image: search-engine/db-config:latest
+    container_name: search_engine_db_config
+    network_mode: host
+    env_file:
+      - .env
+    environment:
+      - HOST=localhost
+    volumes:
+      - ./csv-data:/app/csv-data
+    depends_on:
+      - mysql
 
   mysql:
     image: mysql:latest
     container_name: mysql
     restart: always
+    network_mode: host
     env_file:
       - .env.mysql
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+    # ports:
+    #   - '3306:3306'
+    # expose:
+    #   - '3306'
     volumes:
       - ./volumes/mysql:/var/lib/mysql

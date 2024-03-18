@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 import os
 from dotenv import load_dotenv
-from crontab import CronTab
+# from crontab import CronTab
 import gzip
 from datetime import datetime
 import glob
